@@ -23,6 +23,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 gem "slim-rails"
 gem "twitter-bootstrap-rails"
+gem 'devise'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -56,5 +57,6 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'rails-controller-testing'
+  gem 'launchy'
 end
 
