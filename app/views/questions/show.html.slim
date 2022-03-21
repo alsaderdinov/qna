@@ -1,8 +1,18 @@
-h1 =question.title
+h1 =@question.title
 
-p =question.body
+h4 =@question.body
+
+br
 
 h2 Answers
 
-ol
-  =render question.answers
+ul
+  =render @question.answers
+
+br
+
+h2 Create New Answer
+
+br
+
+=render 'answers/form'

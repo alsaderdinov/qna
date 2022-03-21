@@ -13,6 +13,5 @@ feature 'User can view question', %q{
     expect(page).to have_content(question.body)
 
     answers.each { |answer| expect(page).to have_content(answer.body) }
-    save_and_open_page
   end
 end

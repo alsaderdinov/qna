@@ -19,13 +19,21 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #show' do
     before { get :show, params: { id: question } }
 
-    it { should render_template('show') }
+    it 'assigns the requested question to @question' do
+      expect(assigns(:question)).to eq question
     end
+
+    it { should render_template('show') }
+  end
 
   describe 'GET #new' do
     before { login(user) }
 
     before { get :new }
+
+    it 'assigns a new Question to @question' do
+      expect(assigns(:question)).to be_a_new(Question)
+    end
 
     it { should render_template('new') }
   end
@@ -45,7 +53,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        expect do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+        end.to_not change(Question, :count)
       end
 
       it 're-renders new view' do
@@ -55,4 +65,3 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 end
-

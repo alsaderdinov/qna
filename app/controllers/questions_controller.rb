@@ -5,9 +5,13 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @question = Question.find(params[:id])
+  end
 
-  def new; end
+  def new
+    @question = Question.new
+  end
 
   def create
     @question = Question.new(question_params)
@@ -20,14 +24,7 @@ class QuestionsController < ApplicationController
 
   private
 
-  def question
-    @question ||= params[:id] ? Question.find(params[:id]) : Question.new
-  end
-
-  helper_method :question
-
   def question_params
     params.require(:question).permit(:title, :body)
   end
 end
-
