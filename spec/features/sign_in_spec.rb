@@ -7,8 +7,6 @@ feature 'User can sign in', "
 " do
   given(:user) { create(:user) }
 
-  background { visit new_user_session_path }
-
   scenario 'Registered user tries to sign in' do
     sign_in(user)
 
@@ -16,6 +14,8 @@ feature 'User can sign in', "
   end
 
   scenario 'Unregistered user tries to sign in' do
+    visit new_user_session_path
+
     fill_in 'Email', with: 'wrong_email'
     fill_in 'Password', with: 'wrong_password'
     click_on 'Log in'
