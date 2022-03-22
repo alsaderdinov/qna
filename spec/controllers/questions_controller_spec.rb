@@ -67,7 +67,7 @@ RSpec.describe QuestionsController, type: :controller do
     describe 'DELETE #destroy' do
       before { login(user) }
 
-      context 'Author delete question' do
+      context 'Author delete own question' do
         let!(:question) { create(:question, user: user) }
 
         it 'deletes the question' do
@@ -84,7 +84,7 @@ RSpec.describe QuestionsController, type: :controller do
         let(:not_author) { create(:user) }
         let!(:not_author_question) { create(:question, user: not_author) }
 
-        it 'not deletes the question' do
+        it 'question not delete' do
           expect { delete :destroy, params: { id: not_author_question } }.to_not change(Question, :count)
         end
 

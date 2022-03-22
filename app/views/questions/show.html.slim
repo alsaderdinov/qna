@@ -18,4 +18,4 @@ br
 =render 'answers/form'
 
 -if current_user&.author_of?(@question)
-  p =link_to 'Delete question', question_path(@question), method: :delete
+  p =link_to 'Delete question', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }

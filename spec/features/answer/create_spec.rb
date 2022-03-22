@@ -6,9 +6,9 @@ feature 'User can create answer', "
   I'd like to be able to create answer
 " do
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
-  describe 'Authenticated user' do
+  given!(:question) { create(:question, user: user) }
 
+  describe 'Authenticated user' do
     background do
       sign_in(user)
       visit question_path(question)

@@ -9,19 +9,26 @@ feature 'User can delete own question', "
   given(:not_author) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
-  scenario 'delete own question' do
-    sign_in(user)
-    visit question_path(question)
+  describe 'Authenticated user' do
+    scenario 'delete own question' do
+      sign_in(user)
+      visit question_path(question)
 
-    click_on 'Delete question'
-    expect(page).to have_content 'Your question successfully deleted'
-    expect(page).to_not have_content question.title
+      click_on 'Delete question'
+      expect(page).to have_content 'Your question successfully deleted'
+      expect(page).to_not have_content question.title
+    end
+
+    scenario 'not author tries delete question' do
+      sign_in(not_author)
+      visit question_path(question)
+
+      expect(page).to_not have_content 'Delete question'
+    end
   end
 
-  scenario 'not author tries delete question' do
-    sign_in(not_author)
+  scenario 'Not authenticated user tries to delete question' do
     visit question_path(question)
-
     expect(page).to_not have_content 'Delete question'
   end
 end
