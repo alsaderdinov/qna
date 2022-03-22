@@ -8,7 +8,9 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
 
   body
+    - if user_signed_in?
+      = link_to 'Log out', destroy_user_session_path, method: :delete
+
     p.notice = notice
     p.alert = alert
     = yield
-

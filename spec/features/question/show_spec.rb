@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can view question', %q{
+feature 'User can view question', "
  In order to view question
  As an User
  I'd like to be able to see question
-} do
+" do
   given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 3, question: question) }
 
