@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :answer do
-    body { "MyText" }
+    body { Faker::TvShows::Simpsons.quote }
 
     trait :invalid do
       body { nil }
