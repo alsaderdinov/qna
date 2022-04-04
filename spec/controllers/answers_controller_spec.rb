@@ -34,34 +34,34 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :create
       end
     end
+  end
 
-    describe 'DELETE #destroy' do
-      before { login(user) }
+  describe 'DELETE #destroy' do
+    before { login(user) }
 
-      context 'Author delete onw answer' do
-        let!(:answer) { create(:answer, question: question, user: user) }
+    context 'Author delete onw answer' do
+      let!(:answer) { create(:answer, question: question, user: user) }
 
-        it 'delete the answer' do
-          expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
-        end
-
-        it 'redirects to questions/show' do
-          delete :destroy, params: { id: answer }
-          expect(response).to redirect_to question_path(question)
-        end
+      it 'delete the answer' do
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
       end
 
-      context 'Not author delete answer' do
-        let(:not_author) { create(:user) }
-        let!(:not_author_answer) { create(:answer, question: question, user: not_author) }
-        it 'answer not delete' do
-          expect { delete :destroy, params: { id: not_author_answer } }.to_not change(Answer, :count)
-        end
+      it 'redirects to questions/show' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
 
-        it 'render question/show' do
-          delete :destroy, params: { id: not_author_answer }
-          expect(response).to render_template 'questions/show'
-        end
+    context 'Not author delete answer' do
+      let(:not_author) { create(:user) }
+      let!(:not_author_answer) { create(:answer, question: question, user: not_author) }
+      it 'answer not delete' do
+        expect { delete :destroy, params: { id: not_author_answer } }.to_not change(Answer, :count)
+      end
+
+      it 'render question/show' do
+        delete :destroy, params: { id: not_author_answer }
+        expect(response).to render_template 'questions/show'
       end
     end
   end
