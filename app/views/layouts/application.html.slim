@@ -12,6 +12,8 @@ html
     - if user_signed_in?
       = link_to 'Log out', destroy_user_session_path, method: :delete
 
-    p.notice = notice
-    p.alert = alert
+    .flash
+      p.notice = notice
+      p.alert = alert
+
     = yield

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'questions#index'
 
-  resources :questions, only: %i[index show new create destroy] do
-    resources :answers, only: %i[new create destroy], shallow: true
+  resources :questions do
+    resources :answers, shallow: true, only: %i[create destroy]
   end
 end

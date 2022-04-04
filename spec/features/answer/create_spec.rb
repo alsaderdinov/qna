@@ -8,7 +8,7 @@ feature 'User can create answer', "
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
       visit question_path(question)
@@ -18,11 +18,11 @@ feature 'User can create answer', "
       fill_in 'Body', with: 'test_answer'
       click_on 'Create answer'
 
-      expect(page).to have_content 'Answer was successfully created'
+      expect(page).to have_content 'Your answer was successfully created.'
       expect(page).to have_content 'test_answer'
     end
 
-    scenario 'create answer with errros' do
+    scenario 'create answer with errors' do
       click_on 'Create answer'
 
       expect(page).to have_content("Body can't be blank")

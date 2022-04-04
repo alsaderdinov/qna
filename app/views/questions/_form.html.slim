@@ -1,7 +1,7 @@
-=form_with model: @question, local: true do |f|
-  =render 'shared/errors', resource: @question
-  =f.label :title
-  =f.text_field :title
-  =f.label :body
-  =f.text_area :body
-  =f.submit 'Ask'
+= form_with model: @question do |f|
+  = render 'shared/errors', resource: @question
+  = f.label :title
+  = f.text_field :title
+  = f.label :body
+  = f.text_area :body
+  = f.submit 'Ask'
