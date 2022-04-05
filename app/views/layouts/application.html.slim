@@ -8,12 +8,14 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
 
+  = render 'layouts/navbar'
+
   body
-    - if user_signed_in?
-      = link_to 'Log out', destroy_user_session_path, method: :delete
 
     .flash
       p.notice = notice
       p.alert = alert
 
     = yield
+
+  = render 'layouts/footer'
