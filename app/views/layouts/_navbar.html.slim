@@ -1,0 +1,13 @@
+nav.navbar.navbar-dark.bg-dark
+  .container-fluid
+    = link_to 'Q&A', root_path, class: 'navbar-brand'
+    span.navbar-text
+      - if user_signed_in?
+        'Welcome!
+        = current_user.email
+        ' |
+        = link_to 'Logout', destroy_user_session_path, method: :delete
+      - else
+        = link_to 'Login', user_session_path
+        ' |
+        = link_to 'Signup', new_user_registration_path
