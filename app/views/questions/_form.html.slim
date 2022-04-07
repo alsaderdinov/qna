@@ -1,7 +1,9 @@
 = form_with model: @question do |f|
   = render 'shared/errors', resource: @question
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Ask'
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+    br
+    = f.submit 'Ask question', class: 'btn btn-primary'

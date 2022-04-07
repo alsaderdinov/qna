@@ -15,7 +15,7 @@ feature 'User can create answer', "
     end
 
     scenario 'create answer' do
-      fill_in 'Body', with: 'test_answer'
+      fill_in 'Your answer', with: 'test_answer'
       click_on 'Create answer'
 
       expect(page).to have_content 'Your answer was successfully created.'
@@ -31,7 +31,7 @@ feature 'User can create answer', "
 
   scenario 'Unauthenticated user tries to create answer' do
     visit question_path(question)
-    fill_in 'Body', with: 'some_text'
+    fill_in 'Your answer', with: 'some_text'
     click_on 'Create answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'

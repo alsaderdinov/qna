@@ -10,6 +10,8 @@ import "channels"
 
 require('jquery')
 
+require('../utilities/answers')
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()

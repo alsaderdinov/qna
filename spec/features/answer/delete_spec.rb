@@ -14,7 +14,7 @@ feature 'User can delete own answer', "
       sign_in(user)
       visit question_path(question)
 
-      click_on 'Delete answer'
+      click_on 'Delete'
       expect(page).to have_content 'Your answer was successfully deleted'
       expect(page).to_not have_content answer.body
     end
@@ -23,7 +23,8 @@ feature 'User can delete own answer', "
       sign_in(not_author)
       visit question_path(question)
 
-      expect(page).to_not have_content 'Delete answer'
+      element = first('li', text: not_author.email)
+      expect(element).to_not have_link 'Delete'
     end
   end
 

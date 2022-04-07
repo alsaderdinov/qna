@@ -8,6 +8,6 @@ nav.navbar.navbar-dark.bg-dark
         ' |
         = link_to 'Logout', destroy_user_session_path, method: :delete
       - else
-        = link_to 'Login', user_session_path
+        = link_to 'Login', new_user_session_path
         ' |
         = link_to 'Signup', new_user_registration_path
