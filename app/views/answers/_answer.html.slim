@@ -5,6 +5,8 @@
     - if current_user&.author_of?(answer)
 
       = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id }" }, local: false do |f|
+        .edit-answer-errors
+          = render 'shared/errors', resource: @answer
         = f.label :body, 'Your answer'
         br
         = f.text_area :body

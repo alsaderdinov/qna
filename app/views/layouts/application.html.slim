@@ -8,14 +8,10 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
 
-  = render 'layouts/navbar'
 
   body
-
+    = render 'layouts/navbar'
     .flash
-      p.notice = notice
-      p.alert = alert
-
+      = render 'shared/flash'
     = yield
-
-  = render 'layouts/footer'
+    = render 'layouts/footer'
