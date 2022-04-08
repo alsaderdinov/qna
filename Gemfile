@@ -24,6 +24,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootstrap', '~> 5.1.3'
 gem 'devise'
 gem 'faker'
+gem 'fuubar'
 gem 'jquery-rails'
 gem 'rubocop', require: false
 gem 'slim-rails'
