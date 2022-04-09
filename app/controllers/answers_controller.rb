@@ -10,16 +10,26 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    unless current_user.author_of?(@answer)
+      flash.now[:alert] = 'You must be author of this answer'
+      render 'questions/show'
+      return
+    end
+
+    if @answer.update(answer_params)
+      flash.now[:notice] = 'Your answer was succesfully updated.'
+    else
+      flash.now[:alert] = 'Fail answer update.'
+    end
     @question = @answer.question
   end
 
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Your answer was successfully deleted.'
+      flash.now[:notice] = 'Your answer was successfully deleted.'
     else
-      render 'questions/show'
+      flash.now[:alert] = 'You must be author of this answer.'
     end
   end
 

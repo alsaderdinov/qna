@@ -48,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    it 'renders view template' do
+    it 'renders show template' do
       patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
       expect(response).to render_template :update
     end
@@ -59,9 +59,21 @@ RSpec.describe AnswersController, type: :controller do
           patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
         end.to_not change(answer, :body)
       end
-      it 'renders view template' do
+
+      it 'renders show template' do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
         expect(response).to render_template :update
+      end
+    end
+
+    context 'not author tries update answer' do
+      let(:not_author) { create(:user) }
+      let!(:answer2) { create(:answer, question: question, user: not_author) }
+      it 'does not change answer attributes' do
+        patch :update, params: { id: answer2, answer: { body: 'new body' } }, format: :js
+        answer2.reload
+
+        expect(answer2.body).to_not eq 'New body'
       end
     end
   end
@@ -73,12 +85,12 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer) { create(:answer, question: question, user: user) }
 
       it 'delete the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to questions/show' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -86,12 +98,12 @@ RSpec.describe AnswersController, type: :controller do
       let(:not_author) { create(:user) }
       let!(:not_author_answer) { create(:answer, question: question, user: not_author) }
       it 'answer not delete' do
-        expect { delete :destroy, params: { id: not_author_answer } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: not_author_answer }, format: :js }.to_not change(Answer, :count)
       end
 
       it 'render question/show' do
-        delete :destroy, params: { id: not_author_answer }
-        expect(response).to render_template 'questions/show'
+        delete :destroy, params: { id: not_author_answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
   end

@@ -1,6 +1,7 @@
-$('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
+$('.flash').html('<%= render 'shared/flash' %>');
 
 <% unless @answer.errors.present? %>
-$('.flash').html('<%= render 'shared/flash' %>');
-$('.answers-list').html('<%= j render @question.answers %>');
+    $('.list-group-item[data-answer-id=<%= @answer.id %>]').html('<%= j render @answer %>');
+<% else %>
+    $('.list-group-item[data-answer-id=<%= @answer.id %>] .edit-answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
 <% end %>

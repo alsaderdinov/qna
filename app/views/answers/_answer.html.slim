@@ -1,5 +1,5 @@
 - if answer.persisted?
-  li.list-group-item
+  = content_tag :li, class: "list-group-item", data: { 'answer-id': answer.id }
     h5.card-subtitle.mb-3 = answer.body
 
     - if current_user&.author_of?(answer)
@@ -16,10 +16,10 @@
       ' Answer actions:
       => link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
       '|
-      = link_to 'Delete', answer_path(answer),
+      = link_to 'Delete', answer_path(answer), 
               method: :delete,
               data: { confirm: 'Are you sure?' },
-              local: false
+              remote: true
 
     .text-muted
       figure.text-end
