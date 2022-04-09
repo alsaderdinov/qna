@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_answer, only: %i[destroy update]
+  before_action :find_answer, only: %i[destroy update best]
   before_action :find_question, only: %i[new create]
 
   def create
@@ -13,7 +13,6 @@ class AnswersController < ApplicationController
     unless current_user.author_of?(@answer)
       flash.now[:alert] = 'You must be author of this answer'
       render 'questions/show'
-      return
     end
 
     if @answer.update(answer_params)
@@ -30,6 +29,14 @@ class AnswersController < ApplicationController
       flash.now[:notice] = 'Your answer was successfully deleted.'
     else
       flash.now[:alert] = 'You must be author of this answer.'
+    end
+  end
+
+  def best
+    if current_user.author_of?(@answer.question)
+      @answer.set_best!
+    else
+      flash.now[:alert] = 'You must be author of question'
     end
   end
 

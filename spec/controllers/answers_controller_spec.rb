@@ -78,6 +78,43 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #best' do
+    let(:user) { create(:user) }
+    let(:not_author) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let(:answer) { create(:answer, question: question, user: user) }
+
+    context 'User is author of question' do
+      before { login(user) }
+
+      it 'set best answer' do
+        patch :best, params: { id: answer }, format: :js
+        answer.reload
+        expect(answer.best).to be
+      end
+
+      it 'renders best view' do
+        patch :best, params: { id: answer }, format: :js
+        expect(response).to render_template :best
+      end
+    end
+
+    context 'User is not author of question' do
+      before { login(not_author) }
+
+      it 'tries to select best answer' do
+        patch :best, params: { id: answer }, format: :js
+        answer.reload
+        expect(answer.best).not_to be
+      end
+
+      it 'renders best view' do
+        patch :best, params: { id: answer }, format: :js
+        expect(response).to render_template :best
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     before { login(user) }
 

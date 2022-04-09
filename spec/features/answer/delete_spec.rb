@@ -10,7 +10,6 @@ feature 'User can delete own answer', "
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user', js: true do
-
     scenario 'delete hist answer' do
       sign_in(user)
       visit question_path(question)
@@ -26,7 +25,7 @@ feature 'User can delete own answer', "
       sign_in(not_author)
       visit question_path(question)
 
-      element = first('li', text: not_author.email)
+      element = first('li', text: user.email)
       expect(element).to_not have_link 'Delete answer'
     end
   end

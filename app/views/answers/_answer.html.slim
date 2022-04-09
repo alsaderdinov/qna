@@ -2,6 +2,12 @@
   = content_tag :li, class: "list-group-item", data: { 'answer-id': answer.id }
     h5.card-subtitle.mb-3 = answer.body
 
+    - if current_user&.author_of?(answer.question)
+      = link_to 'Select as best answer', best_answer_path(answer),
+        method: :patch,
+        remote: :true
+      br
+
     - if current_user&.author_of?(answer)
 
       = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id }" }, local: false do |f|
@@ -23,4 +29,7 @@
 
     .text-muted
       figure.text-end
-        small Answer author: #{@question.user.email}
+        - if answer.best?
+          | Best answer
+          hr
+        small Answer author: #{answer.user.email}
