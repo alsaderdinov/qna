@@ -1,7 +1,6 @@
-h1 Questions
+= link_to 'Ask question', new_question_path
 
-table class="table"
-  tr
-  =render @questions
+h1.mt-2 Questions
 
-p =link_to 'Ask question', new_question_path
+ul.list-group
+  = render @questions

@@ -1,7 +1,35 @@
 - if answer.persisted?
+  = content_tag :li, class: "list-group-item", data: { 'answer-id': answer.id }
+    h5.card-subtitle.mb-3 = answer.body
 
-  li
-    =answer.body
+    - if current_user&.author_of?(answer.question)
+      = link_to 'Select as best answer', best_answer_path(answer),
+        method: :patch,
+        remote: :true
+      br
 
-  -if current_user&.author_of?(answer)
-    =link_to 'Delete answer', answer_path(answer), method: :delete, data: { confirm: 'Are you sure?' }
+    - if current_user&.author_of?(answer)
+
+      = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id }" }, local: false do |f|
+        .edit-answer-errors
+          = render 'shared/errors', resource: @answer
+        = f.label :body, 'Your answer'
+        br
+        = f.text_area :body
+        br
+        = f.submit 'save'
+
+      ' Answer actions:
+      => link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      '|
+      = link_to 'Delete', answer_path(answer), 
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              remote: true
+
+    .text-muted
+      figure.text-end
+        - if answer.best?
+          | Best answer
+          hr
+        small Answer author: #{answer.user.email}

@@ -1,2 +1,11 @@
-tr
-  td =question.title
+li.list-group-item.d-flex.justify-content-between.align-items-center
+
+  h6
+    a.link-primary href="#{question_path(question)}" = question.title
+
+  span.badge.bg-primary.rounded-pill
+    - if question.answers.present?
+      ' Answers:
+      = question.answers.count
+    - else
+      ' No have answers yet

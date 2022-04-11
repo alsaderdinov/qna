@@ -1,21 +1,48 @@
-h1 =@question.title
+.question
+  h1.mb-3 = @question.title
+  h3= @question.body
 
-h4 =@question.body
 
-br
+  - if current_user&.author_of?(@question)
+
+    = form_with model: @question, class: 'd-none', html: { id: "edit-question-form" }, local: false do |f|
+      .edit-question-errors
+        = render 'shared/errors', resource: @question
+      = f.label :title, 'Your question title'
+      br
+      = f.text_field :title
+      br
+      = f.label :body, 'Your question'
+      br
+      = f.text_area :body
+      br
+      = f.submit 'save'
+
+    ' Question actions:
+    => link_to 'Edit', '#', class: 'edit-question-link'
+    '|
+    => link_to 'Delete', question_path(@question),
+            method: :delete,
+            data: { confirm: 'are you sure?' },
+            local: false
+
+  .text-muted
+    figure.text-end
+      small Question author: #{@question.user.email}
+
+hr
 
 h2 Answers
 
-ul
-  =render @question.answers
+hr
 
-br
+.answers
+  ul.answers-list.list-group.list-group-flush
+    = render @question.answers
 
-h2 Create New Answer
 
-br
+  hr
 
-=render 'answers/form'
+  h2 Create New Answer
 
--if current_user&.author_of?(@question)
-  p =link_to 'Delete question', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }
+  =render 'answers/form'

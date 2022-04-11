@@ -1,12 +1,26 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :find_question, only: %i[show destroy]
+  before_action :find_question, only: %i[show update destroy]
 
   def index
     @questions = Question.all
   end
 
   def show; end
+
+  def update
+    unless current_user.author_of?(@question)
+      flash.now[:alert] = 'you not author of this question'
+      render :show
+      return
+    end
+
+    if @question.update(question_params)
+      flash.now[:notice] = 'Your question was successfully updated.'
+    else
+      flash.now[:alert] = 'Fail question update.'
+    end
+  end
 
   def new
     @question = Question.new
