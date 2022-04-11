@@ -21,6 +21,10 @@
       br
       = f.text_area :body
       br
+      = f.label :files
+      br
+      = f.file_field :files, multiple: true
+      br
       = f.submit 'save'
 
     ' Question actions:
