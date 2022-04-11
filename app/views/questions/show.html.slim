@@ -1,7 +1,12 @@
 .question
   h1.mb-3 = @question.title
   h3= @question.body
-
+  - if @question.files.attached?
+    p.attached-files
+      'Attached files:
+      - @question.files.each do |file|
+        span>
+          = link_to file.filename.to_s, url_for(file)
 
   - if current_user&.author_of?(@question)
 
@@ -40,9 +45,8 @@ hr
   ul.answers-list.list-group.list-group-flush
     = render @question.answers
 
-
   hr
 
   h2 Create New Answer
 
-  =render 'answers/form'
+  = render 'answers/form'
