@@ -5,4 +5,8 @@
   .form-group
     = f.label :body, 'Your answer'
     = f.text_area :body, class: 'form-control'
+    = f.label :files
+    br
+    = f.file_field :files, multiple: true
+    br
     = f.submit 'Create answer', class: 'btn btn-primary'
