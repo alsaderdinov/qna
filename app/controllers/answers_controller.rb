@@ -16,7 +16,7 @@ class AnswersController < ApplicationController
     end
 
     if @answer.update(answer_params)
-      flash.now[:notice] = 'Your answer was succesfully updated.'
+      flash.now[:notice] = 'Your answer was successfully updated.'
     else
       flash.now[:alert] = 'Fail answer update.'
     end
