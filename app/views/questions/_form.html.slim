@@ -7,6 +7,6 @@
     = f.text_area :body, class: 'form-control'
     = f.label :files
     br
-    = f.file_field :files, multiple: true
+    = f.file_field :files, multiple: true, direct_upload: true
     br
     = f.submit 'Ask question', class: 'btn btn-primary'
