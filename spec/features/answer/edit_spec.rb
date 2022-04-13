@@ -44,6 +44,19 @@ feature 'User can edit his answer', "
       end
     end
 
+    scenario 'delete attachments' do
+      within '.answers-list' do
+        click_on 'Edit'
+        attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+        click_on 'save'
+
+        find(:css, '.octicon-x').click
+        page.driver.browser.switch_to.alert.accept
+        expect(page).to_not have_link 'rails_helper.rb'
+      end
+      expect(page).to have_content 'Your attachment was successfully deleted'
+    end
+
     scenario 'update his answer with errors' do
       within '.answers-list' do
         click_on 'Edit'

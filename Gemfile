@@ -26,6 +26,7 @@ gem 'devise'
 gem 'faker'
 gem 'fuubar'
 gem 'jquery-rails'
+gem 'octicons_helper'
 gem 'rubocop', require: false
 gem 'slim-rails'
 

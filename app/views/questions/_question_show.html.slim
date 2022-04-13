@@ -1,18 +1,35 @@
-.question
-  h1.mb-3 = @question.title
-  h3= @question.body
-  - if @question.files.attached?
-    p.attached-files
-      'Attached files:
-      - @question.files.each do |file|
-        span>
-          = link_to file.filename.to_s, url_for(file)
+h1.mb-3 = @question.title
+h3= @question.body
 
-  - if current_user&.author_of?(@question)
-    ' Question actions:
-    => link_to 'Edit', '#', class: 'edit-question-link'
-    '|
-    => link_to 'Delete', question_path(@question),
-            method: :delete,
-            data: { confirm: 'are you sure?' },
-            local: false
+= render 'shared/attachments', resource: @question
+
+- if current_user&.author_of?(@question)
+
+  = form_with model: @question, class: 'd-none', html: { id: "edit-question-form" }, local: false do |f|
+    .edit-question-errors
+      = render 'shared/errors', resource: @question
+    = f.label :title, 'Your question title'
+    br
+    = f.text_field :title
+    br
+    = f.label :body, 'Your question'
+    br
+    = f.text_area :body
+    br
+    = f.label :files
+    br
+    = f.file_field :files, multiple: true
+    br
+    = f.submit 'save'
+
+  ' Question actions:
+  => link_to 'Edit', '#', class: 'edit-question-link'
+  '|
+  => link_to 'Delete', question_path(@question),
+          method: :delete,
+          data: { confirm: 'are you sure?' },
+          remote: true
+
+.text-muted
+  figure.text-end
+    small Question author: #{@question.user.email}

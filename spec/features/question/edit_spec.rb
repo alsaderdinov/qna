@@ -53,7 +53,18 @@ feature 'User can edit his question', "
         click_on 'save'
         expect(page).to have_content "Body can't be blank"
       end
-      expect(page).to have_content 'Fail question update.'
+    end
+
+    scenario 'delete attachment' do
+      within '.question' do
+        attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+        click_on 'save'
+
+        find(:css, '.octicon-x').click
+        page.driver.browser.switch_to.alert.accept
+        expect(page).to_not have_link 'rails_helper.rb'
+      end
+      expect(page).to have_content 'Your attachment was successfully deleted'
     end
   end
 end
