@@ -11,12 +11,12 @@ class AnswersController < ApplicationController
 
   def update
     unless current_user.author_of?(@answer)
-      flash.now[:alert] = 'You must be author of this answer'
+      flash.now[:alert] = 'You must be author.'
       render 'questions/show'
     end
 
     if @answer.update(answer_params)
-      flash.now[:notice] = 'Your answer was succesfully updated.'
+      flash.now[:notice] = 'Your answer was successfully updated.'
     else
       flash.now[:alert] = 'Fail answer update.'
     end
@@ -28,7 +28,7 @@ class AnswersController < ApplicationController
       @answer.destroy
       flash.now[:notice] = 'Your answer was successfully deleted.'
     else
-      flash.now[:alert] = 'You must be author of this answer.'
+      flash.now[:alert] = 'You must be author.'
     end
   end
 
@@ -36,7 +36,7 @@ class AnswersController < ApplicationController
     if current_user.author_of?(@answer.question)
       @answer.set_best!
     else
-      flash.now[:alert] = 'You must be author of question'
+      flash.now[:alert] = 'You must be author.'
     end
   end
 
@@ -47,10 +47,10 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    @answer = Answer.find(params[:id])
+    @answer = Answer.with_attached_files.find(params[:id])
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, files: [])
   end
 end

@@ -10,9 +10,9 @@ class QuestionsController < ApplicationController
 
   def update
     unless current_user.author_of?(@question)
-      flash.now[:alert] = 'you not author of this question'
+      flash.now[:alert] = 'You must be author.'
       render :show
-      return
+      return response.status = :forbidden
     end
 
     if @question.update(question_params)
@@ -48,10 +48,10 @@ class QuestionsController < ApplicationController
   private
 
   def find_question
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [])
   end
 end

@@ -5,6 +5,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  has_many_attached :files
+
   def set_best!
     transaction do
       question.answers.update_all(best: false)
