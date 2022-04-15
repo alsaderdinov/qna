@@ -10,9 +10,9 @@ class QuestionsController < ApplicationController
 
   def update
     unless current_user.author_of?(@question)
-      flash.now[:alert] = 'you not author of this question'
+      flash.now[:alert] = 'You must be author.'
       render :show
-      return
+      return response.status = :forbidden
     end
 
     if @question.update(question_params)

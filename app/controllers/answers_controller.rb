@@ -11,7 +11,7 @@ class AnswersController < ApplicationController
 
   def update
     unless current_user.author_of?(@answer)
-      flash.now[:alert] = 'You must be author of this answer'
+      flash.now[:alert] = 'You must be author.'
       render 'questions/show'
     end
 
@@ -28,7 +28,7 @@ class AnswersController < ApplicationController
       @answer.destroy
       flash.now[:notice] = 'Your answer was successfully deleted.'
     else
-      flash.now[:alert] = 'You must be author of this answer.'
+      flash.now[:alert] = 'You must be author.'
     end
   end
 
@@ -36,7 +36,7 @@ class AnswersController < ApplicationController
     if current_user.author_of?(@answer.question)
       @answer.set_best!
     else
-      flash.now[:alert] = 'You must be author of question'
+      flash.now[:alert] = 'You must be author.'
     end
   end
 
