@@ -1,6 +1,7 @@
 = form_with model: @question do |f|
 
-  = render 'shared/errors', resource: @question
+  .question-errors
+    = render 'shared/errors', resource: @question
 
   .card
     .card-body
@@ -15,8 +16,8 @@
       .mb-3
         = f.label :files, class: 'form-label'
         = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control'
-
       = f.fields_for :links do |l|
+
         .mb-3
           = l.label :name, 'Link name', class: 'form-label'
           = l.text_field :name, class: 'form-control'
@@ -25,5 +26,5 @@
           = l.label :url, class: 'form-label'
           = l.text_field :url, class: 'form-control'
 
-      .mb-3
-        = f.submit 'Ask question', class: 'btn btn-primary'
+        .mb-3
+          = f.submit 'Ask question', class: 'btn btn-primary'

@@ -1,11 +1,14 @@
-li.list-group-item.d-flex.justify-content-between.align-items-center
-
-  h6
-    a.link-primary href="#{question_path(question)}" = question.title
-
-  span.badge.bg-primary.rounded-pill
-    - if question.answers.present?
-      ' Answers:
-      = question.answers.count
-    - else
-      ' No have answers yet
+.media.text-muted.pt-3
+  .media-body.pb-3.mb-0.small.lh-125.border-bottom.border-gray
+    .d-flex.justify-content-between.align-items-center.w-100
+      strong.text-gray-dark
+        / a href="#{question_path(question)}" = question.title
+        a.link-primary.text-decoration-none href="#{question_path(question)}" = question.title
+      - if question.answers.present?
+        ' Answers:
+        = question.answers.count
+      - else
+        ' No have answers yet
+    span.d-block
+      ' Author:
+      = question.user.email

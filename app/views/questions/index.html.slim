@@ -1,6 +1,7 @@
-= link_to 'Ask question', new_question_path
+= link_to 'Ask Question', new_question_path, class: 'btn btn-primary mb-3 mt-3'
 
-h1.mt-2 Questions
 
-ul.list-group
+.my-3.p-3.bg-white.rounded.box-shadow
+  h6.border-bottom.border-gray.pb-2.mb-0
+    | Questions
   = render @questions

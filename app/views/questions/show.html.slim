@@ -1,18 +1,16 @@
 .question
-  = render 'question_show'
+  .card-body
+    = render 'question_show'
 
 hr
 
 h2 Answers
 
-hr
-
 .answers
-  ul.answers-list.list-group.list-group-flush
-    = render @question.answers
+  .card-body
+    .answers-list
+      = render @question.answers
 
-  hr
+h2 Create New Answer
 
-  h2 Create New Answer
-
-  = render 'answers/form'
+= render 'answers/form'

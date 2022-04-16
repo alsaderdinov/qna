@@ -6,7 +6,10 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = Answer.new
+    @answer.links.new
+  end
 
   def update
     unless current_user.author_of?(@question)
