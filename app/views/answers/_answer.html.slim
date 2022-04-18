@@ -3,11 +3,7 @@
     h5.card-subtitle.mt-3 = answer.body
     = render 'shared/attachments', resource: answer
 
-    - if @answer.links.present?
-      .links
-        ul
-          - answer.links.each do |link|
-            li= link_to link.name, link.url
+    = render 'shared/links', resource: answer
 
     - if current_user&.author_of?(answer)
 
@@ -25,7 +21,15 @@
               = f.label :files, class: 'form-label'
               = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control'
 
-            .mb-3
+            #links
+              = f.fields_for :links do |link|
+                = render 'shared/links_fields', f: link
+
+            .links
+              = link_to_add_association 'Add link', f, :links,
+                      partial: 'shared/links_fields', class: 'text-decoration-none'
+
+            .mt-3
               = f.submit 'save', class: 'btn btn-primary'
 
       ' Answer actions:

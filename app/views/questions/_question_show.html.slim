@@ -8,12 +8,7 @@ h3.mb-3
 
 = render 'shared/attachments', resource: @question
 
-- if @question.links.present?
-  .links
-    ' Links:
-    ul
-      - @question.links.each do |link|
-        li= link_to link.name, link.url
+= render 'shared/links', resource: @question
 
 - if current_user&.author_of?(@question)
 
@@ -35,7 +30,15 @@ h3.mb-3
           = f.label :files, class: 'form-label'
           = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control'
 
-        .mb-3
+        #links
+          = f.fields_for :links do |link|
+            = render 'shared/links_fields', f: link
+
+        .links
+          = link_to_add_association 'Add link', f, :links,
+                  partial: 'shared/links_fields', class: 'text-decoration-none'
+
+        .mt-3
           = f.submit 'save', class: 'btn btn-primary'
 
   ' Question actions:

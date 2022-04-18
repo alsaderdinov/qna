@@ -1,0 +1,15 @@
+- if resource.links.present?
+  .links.mt-3
+    ' Links:
+    - resource.links.each do |link|
+
+      .mb-3 id="link-id-#{link.id}"
+        - if link.gist_url?(link.url)
+          = javascript_include_tag link.url + '.js'
+
+        - else
+          = link_to link.name, link.url, class: 'text-decoration-none'
+
+        - if current_user&.author_of?(link.linkable)
+          .mb-3
+            = link_to 'Delete link', link_path(link), method: :delete, remote: true, class: 'text-decoration-none'

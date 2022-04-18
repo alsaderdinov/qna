@@ -16,15 +16,14 @@
       .mb-3
         = f.label :files, class: 'form-label'
         = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control'
-      = f.fields_for :links do |l|
 
-        .mb-3
-          = l.label :name, 'Link name', class: 'form-label'
-          = l.text_field :name, class: 'form-control'
+      #links
+        = f.fields_for :links do |link|
+          = render 'shared/links_fields', f: link
 
-        .mb-3
-          = l.label :url, class: 'form-label'
-          = l.text_field :url, class: 'form-control'
+        .links
+          = link_to_add_association 'Add link', f, :links,
+                  partial: 'shared/links_fields', class: 'text-decoration-none'
 
-        .mb-3
-          = f.submit 'Ask question', class: 'btn btn-primary'
+      .mt-3
+        = f.submit 'Ask question', class: 'btn btn-primary'

@@ -1,5 +1,5 @@
 - if resource.files.attached?
-  .attached-files.mt-3
+  .attached-files.mt-3.mb-3
     - resource.files.each do |file|
       span id="attachment-file-#{file.id}"
         = link_to file.filename.to_s, url_for(file), class: 'text-decoration-none'
