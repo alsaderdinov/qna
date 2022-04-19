@@ -21,9 +21,19 @@
         = f.fields_for :links do |link|
           = render 'shared/links_fields', f: link
 
-        .links
+        .links.mb-3
           = link_to_add_association 'Add link', f, :links,
                   partial: 'shared/links_fields', class: 'text-decoration-none'
+
+        .reward
+          = f.fields_for :reward do |reward|
+            .mb-3
+              = reward.label :name, 'Reward name', class: 'form-label'
+              = reward.text_field :name, class: 'form-control'
+
+            .mb-3
+              = reward.label :image, 'Reward image', class: 'form-label'
+              = reward.file_field :image, class: 'form-control'
 
       .mt-3
         = f.submit 'Ask question', class: 'btn btn-primary'

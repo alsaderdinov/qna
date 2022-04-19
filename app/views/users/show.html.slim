@@ -1,0 +1,14 @@
+h3.mt-3 Rewards
+- if @user.rewards.present?
+  .rewards-list
+    - @user.rewards.each do |reward|
+      .card style='width: 18rem'
+        = image_tag(url_for(reward.image), alt: reward.name, class: 'card-imb-top')
+        .card-body
+          h5.card-title = reward.name
+          p.card-text
+            'Best answer for question
+          strong = reward.question.title
+- else
+  h6
+    'No rewards yet

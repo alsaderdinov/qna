@@ -8,6 +8,13 @@ h3.mb-3
 
 = render 'shared/attachments', resource: @question
 
+- if @question.reward.present?
+  .reward.mb-3
+    ' Reward:
+    = image_tag(url_for(@question.reward.image), size: '85x85', alt: @question.reward.name, class: 'img-thumbnail')
+    br
+    = @question.reward.name
+
 = render 'shared/links', resource: @question
 
 - if current_user&.author_of?(@question)
