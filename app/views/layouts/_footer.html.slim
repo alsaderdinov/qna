@@ -1,7 +1,16 @@
-footer.footer.mt-5
-  .container
-    span.text-muted
-      | &copy;&ensp;
-      = current_yer
-      | &ensp;
-      = link_to 'Project at Github', github_url('flllck', 'qna'), target: "_blank"
+footer.pt-4.my-md-5.pt-md-5.border-top.bg-light
+  .row
+    .col-12.col-md
+      small.d-block.mb-3.text-muted
+        | &copy;&ensp;
+        'Alexander Saderdinov
+        = current_year
+    .col-6.col-md
+      h5
+        'Resources
+      ul.text-small.list-unstyled
+        li = link_to 'Project at Github', github_url('flllck', 'qna'),
+                target: '_blank', class: 'text-muted text-decoration-none'
+
+        li = link_to 'Educational project of the online school Thinketica', 'https://thinknetica.com/',
+                target: '_blank', class: 'text-muted text-decoration-none'

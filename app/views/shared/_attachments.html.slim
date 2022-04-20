@@ -1,10 +1,11 @@
 - if resource.files.attached?
-  .attached-files
+  .attached-files.mt-3.mb-3
     - resource.files.each do |file|
       span id="attachment-file-#{file.id}"
-        = link_to file.filename.to_s, url_for(file)
+        = link_to file.filename.to_s, url_for(file), class: 'text-decoration-none'
+
         - if current_user&.author_of?(resource)
-          = link_to octicon('x', height: 20, fill: 'red'), attachment_path(file),
+          = link_to octicon('x', height: 14, fill: 'red'), attachment_path(file),
                   method: :delete,
                   data: { confirm: 'Are you sure?' },
                   remote: true

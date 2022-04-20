@@ -4,10 +4,11 @@ feature 'User can edit his answer', "
   As an author of answer
   I'd like to be able to edit my answer
 " do
-  given!(:user) { create(:user) }
-  given!(:not_author) { create(:user) }
+  given(:user) { create(:user) }
+  given(:not_author) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
+  given(:link) { 'https://example.com' }
 
   scenario 'Unauthenticated user cannot edit answer' do
     visit question_path(question)
@@ -41,6 +42,21 @@ feature 'User can edit his answer', "
         click_on 'save'
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'Update his question with added link' do
+      within '.answers-list' do
+        click_on 'Edit'
+
+        click_on 'Add link'
+
+        fill_in 'Link name', with: 'Example link'
+        fill_in 'Url', with: link
+
+        click_on 'save'
+
+        expect(page).to have_link 'Example link', href: link
       end
     end
 

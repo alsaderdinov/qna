@@ -9,4 +9,8 @@ Rails.application.routes.draw do
   end
 
   resources :attachments, only: :destroy
+  resources :links, only: :destroy
+
+  get '/profile/:id', to: 'users#show'
+  resources :users, only: :show
 end

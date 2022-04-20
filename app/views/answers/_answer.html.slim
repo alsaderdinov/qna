@@ -1,33 +1,41 @@
 - if answer.persisted?
   = content_tag :li, class: "list-group-item", data: { 'answer-id': answer.id }
-    h5.card-subtitle.mb-3 = answer.body
+    h5.card-subtitle.mt-3 = answer.body
     = render 'shared/attachments', resource: answer
 
-    - if current_user&.author_of?(answer.question)
-      = link_to 'Select as best answer', best_answer_path(answer),
-        method: :patch,
-        remote: true
-      br
+    = render 'shared/links', resource: answer
 
     - if current_user&.author_of?(answer)
 
       = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id }" }, local: false do |f|
         .edit-answer-errors
           = render 'shared/errors', resource: @answer
-        = f.label :body, 'Your answer'
-        br
-        = f.text_area :body
-        br
-        = f.label :files
-        br
-        = f.file_field :files, multiple: true, direct_upload: true
-        br
-        = f.submit 'save'
+
+        .card
+          .card-body
+            .mb-3
+              = f.label :body, 'Your answer', class: 'form-label'
+              = f.text_area :body, class: 'form-control'
+            .mb-3
+
+              = f.label :files, class: 'form-label'
+              = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control'
+
+            #links
+              = f.fields_for :links do |link|
+                = render 'shared/links_fields', f: link
+
+            .links
+              = link_to_add_association 'Add link', f, :links,
+                      partial: 'shared/links_fields', class: 'text-decoration-none'
+
+            .mt-3
+              = f.submit 'save', class: 'btn btn-primary'
 
       ' Answer actions:
-      => link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      => link_to 'Edit', '#', class: 'edit-answer-link text-decoration-none', data: { answer_id: answer.id }
       '|
-      = link_to 'Delete', answer_path(answer),
+      = link_to 'Delete', answer_path(answer), class: 'text-decoration-none',
               method: :delete,
               data: { confirm: 'Are you sure?' },
               remote: true
@@ -35,6 +43,10 @@
     .text-muted
       figure.text-end
         - if answer.best?
-          | Best answer
-          hr
+          p Best answer
+        - elsif current_user&.author_of?(answer.question)
+          = link_to 'Select as best answer', best_answer_path(answer), class: 'text-decoration-none',
+                  method: :patch,
+                  remote: true
+          br
         small Answer author: #{answer.user.email}

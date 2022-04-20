@@ -6,7 +6,10 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = Answer.new
+    @answer.links.new
+  end
 
   def update
     unless current_user.author_of?(@question)
@@ -24,6 +27,8 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    @question.links.new
+    @question.build_reward
   end
 
   def create
@@ -52,6 +57,8 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, files: [],
+                                                    links_attributes: %i[name url],
+                                                    reward_attributes: %i[name image])
   end
 end
