@@ -1,4 +1,5 @@
 class Question < ApplicationRecord
+  include Votable
   include Linkable
   include Fileable
 

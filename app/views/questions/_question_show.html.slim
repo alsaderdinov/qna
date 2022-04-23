@@ -6,6 +6,9 @@ hr
 h3.mb-3
   = @question.body
 
+div class='question-votes' id="vote-question_#{@question.id}"
+  = render 'shared/votes', resource: @question
+
 = render 'shared/attachments', resource: @question
 
 - if @question.reward.present?

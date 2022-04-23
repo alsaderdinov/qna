@@ -1,7 +1,10 @@
 - if answer.persisted?
   = content_tag :li, class: "list-group-item", data: { 'answer-id': answer.id }
-    h5.card-subtitle.mt-3 = answer.body
+    h5.card-subtitle.mt-3.mb-3 = answer.body
     = render 'shared/attachments', resource: answer
+
+    div class="answer-votes" id="vote-answer_#{answer.id}"
+      = render 'shared/votes', resource: answer
 
     = render 'shared/links', resource: answer
 
