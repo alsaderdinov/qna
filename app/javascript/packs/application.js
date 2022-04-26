@@ -13,6 +13,7 @@ require("@nathanvda/cocoon")
 
 require('../utilities/answers')
 require('../utilities/questions')
+require('../utilities/vote')
 
 Rails.start()
 Turbolinks.start()
