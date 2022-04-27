@@ -21,4 +21,6 @@ Rails.application.routes.draw do
 
   get '/profile/:id', to: 'users#show'
   resources :users, only: :show
+
+  mount ActionCable.server => '/cable'
 end

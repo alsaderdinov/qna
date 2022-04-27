@@ -5,6 +5,7 @@
 
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
+import { createConsumer } from "@rails/actioncable"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 
@@ -18,3 +19,6 @@ require('../utilities/vote')
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+const App = App || {};
+App.cable = createConsumer();
