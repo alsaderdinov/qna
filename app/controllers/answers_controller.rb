@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: %i[destroy update best]
   before_action :find_question, only: %i[new create]
+  after_action :published_answer, only: %i[create]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -43,6 +44,26 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def published_answer
+    return if @answer.errors.any?
+
+    ActionCable.server.broadcast(
+      "data-question-id=#{@question.id}",
+      {
+        answer: ApplicationController.render(
+          partial: 'answers/answer_channel',
+          locals: {
+            answer: @answer,
+            current_user: current_user,
+          }
+        ),
+        answer_id: @answer.id,
+        answer_user_id: @answer.user_id,
+        question_user_id: @question.user_id
+      }
+    )
+  end
 
   def find_question
     @question = Question.find(params[:question_id])

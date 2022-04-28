@@ -1,0 +1,53 @@
+= content_tag :li, class: "list-group-item", data: { 'answer-id': answer.id }
+  h5.card-subtitle.mt-3.mb-3 = answer.body
+
+  - if answer.files.attached?
+    .attached-files.mt-3.mb-3
+      - answer.files.each do |file|
+        span id="attachment-file-#{file.id}"
+          = link_to file.filename.to_s, url_for(file), class: 'text-decoration-none'
+
+  div class="answer-votes" id="vote-answer_#{answer.id}"
+    .vote
+      .vote-rating
+        ' Rating:
+        = answer.rating
+
+        .vote-buttons.d-flex.flex-nowrap.d-none
+          .upvote.order-1.p-2
+            = link_to octicon('thumbsup', height: 14, fill: 'green'), polymorphic_path(answer, action: 'upvote'),
+                    method: :post,
+                    data: { type: :json },
+                    remote: :true
+
+          .downvote.order-2.p-2
+            = link_to octicon('thumbsdown', height: 14, fill: 'red'), polymorphic_path(answer, action: 'downvote'),
+                    method: :post,
+                    data: { type: :json },
+                    remote: :true
+
+        .vote-canceling.mb-3
+          = link_to 'Cancel vote', polymorphic_path(answer, action: 'vote_canceling'),
+                  method: :delete,
+                  data: { type: :json },
+                  remote: :true,
+                  class: 'text-decoration-none'
+
+  - if answer.links.present?
+    .links.mt-3
+      ' Links:
+      - answer.links.each do |link|
+        .mb-3 id="link-id-#{link.id}"
+          - if link.gist_url?(link.url)
+            = javascript_include_tag link.url + '.js'
+          - else
+            = link_to link.name, link.url, class: 'text-decoration-none'
+
+  .text-muted
+    figure.text-end
+      .best-answer id ="best-answer_#{answer.id}"
+        = link_to 'Select as best answer', best_answer_path(answer), class: 'best-answer-link text-decoration-none d-none',
+                method: :patch,
+                remote: true
+        br
+      small Answer author: #{answer.user.email}
