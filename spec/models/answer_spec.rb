@@ -4,12 +4,12 @@ RSpec.describe Answer, type: :model do
   it_behaves_like 'fileable'
   it_behaves_like 'linkable'
   it_behaves_like 'votable'
+  it_behaves_like 'commentable'
 
   it { should belong_to(:question) }
   it { should belong_to(:user) }
 
   it { should validate_presence_of(:body) }
-
 
   describe 'set best answer' do
     let(:user) { create(:user) }

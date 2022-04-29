@@ -53,3 +53,10 @@
                   remote: true
           br
         small Answer author: #{answer.user.email}
+
+    .answer-comments
+      - if answer.comments.present?
+        ' Comments:
+        = render answer.comments
+
+    = render partial: 'comments/form', locals: { commentable: answer}

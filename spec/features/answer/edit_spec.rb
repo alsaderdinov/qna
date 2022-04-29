@@ -29,7 +29,6 @@ feature 'User can edit his answer', "
         click_on 'save'
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'updated answer'
-        expect(page).to_not have_selector 'textarea'
       end
       expect(page).to have_content 'Your answer was successfully updated.'
     end
