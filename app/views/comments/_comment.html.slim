@@ -1,4 +1,4 @@
-.comment.mt-3 id="comment-id=#{comment.id}"
+= content_tag :div, class: "comment mt-3", data: { 'comment-id': comment.id }
   .card
     small.card-header
       = comment.user.email

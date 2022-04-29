@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: %i[destroy update best]
   before_action :find_question, only: %i[new create]
-  after_action :published_answer, only: %i[create]
+  after_action :publish_answer, only: %i[create]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -46,7 +46,7 @@ class AnswersController < ApplicationController
 
   private
 
-  def published_answer
+  def publish_answer
     return if @answer.errors.any?
 
     ActionCable.server.broadcast(

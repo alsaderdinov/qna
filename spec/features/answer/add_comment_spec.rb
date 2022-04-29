@@ -32,6 +32,34 @@ feature 'User can create comments', "
     end
   end
 
+  context 'multiple sessions', js: true do
+    scenario "comment appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.answers-list' do
+          fill_in 'Your comment', with: 'Test comment'
+          click_on 'Add comment'
+
+          expect(page).to have_content 'Test comment'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within '.answers-list' do
+          expect(page).to have_content 'Test comment'
+        end
+      end
+    end
+  end
+
   describe 'Unauthenticated user', js: true do
     background do
       visit question_path(question)

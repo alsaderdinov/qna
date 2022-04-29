@@ -6,7 +6,7 @@ feature 'User can create comments', "
   I'd like to be able to create comment
 " do
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given!(:question) { create(:question, user: user) }
 
   describe 'Authenticated user', js: true do
     background do
@@ -27,6 +27,30 @@ feature 'User can create comments', "
       within '.question' do
         click_on 'Add comment'
         expect(page).to have_content "Body can't be blank"
+      end
+    end
+  end
+
+  context 'multiple sessions', js: true do
+    scenario "comment appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Your comment', with: 'Test comment'
+        click_on 'Add comment'
+
+        expect(page).to have_content 'Test comment'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Test comment'
       end
     end
   end

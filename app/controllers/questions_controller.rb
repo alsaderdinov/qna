@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :find_question, only: %i[show update destroy]
 
-  after_action :published_question, only: %i[create]
+  after_action :publish_question, only: %i[create]
 
   def index
     @questions = Question.all
@@ -57,7 +57,7 @@ class QuestionsController < ApplicationController
 
   private
 
-  def published_question
+  def publish_question
     return if @question.errors.any?
 
     ActionCable.server.broadcast(
