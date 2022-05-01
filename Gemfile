@@ -27,6 +27,7 @@ gem 'cocoon'
 gem 'devise'
 gem 'faker'
 gem 'fuubar'
+gem 'gon'
 gem 'jquery-rails'
 gem 'octicons_helper'
 gem 'rubocop', require: false

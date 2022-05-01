@@ -1,0 +1,7 @@
+$('.comment-errors').html('<%= render 'shared/errors', resource: @comment %>');
+$('.flash').html('<%= render 'shared/flash' %>');
+
+<% if @comment.persisted? %>
+  $('.answer-comments').append('<%= j render @comment %>')
+  $('.new-comment #comment_body').val('')
+<% end %>

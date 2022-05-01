@@ -33,7 +33,6 @@ feature 'User can edit his question', "
         click_on 'save'
         expect(page).to_not have_content question.body
         expect(page).to have_content 'updated question'
-        expect(page).to_not have_selector 'textarea'
       end
       expect(page).to have_content 'Your question was successfully updated.'
     end

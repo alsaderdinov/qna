@@ -1,0 +1,11 @@
+.comments-form.mt-3
+  .card-body
+    .comment-errors
+      = render 'shared/errors', resource: @comment
+    = form_with scope: :comment, url: polymorphic_path(commentable, action: "create_comment"), class: 'new-comment', local: false  do |f|
+      .h6
+        = f.label :body, 'Your comment', class: 'form-label'
+      .mb-3
+        = f.text_area :body, class: 'form-control'
+      .mb-3
+        = f.submit 'Add comment', class: 'btn btn-primary'

@@ -62,3 +62,11 @@ div class='question-votes' id="vote-question_#{@question.id}"
 .text-muted
   figure.text-end
     small Question author: #{@question.user.email}
+
+.question-comments
+  - if @question.comments.present?
+    ' Comments:
+    = render @question.comments
+
+
+= render partial: 'comments/form', locals: { commentable: @question }
