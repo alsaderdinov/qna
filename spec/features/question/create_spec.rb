@@ -73,8 +73,7 @@ feature 'User can create question', "
 
   scenario 'Unauthenticated user tries to ask question' do
     visit questions_path
-    click_on 'Ask Question'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_content 'Ask Question'
   end
 end

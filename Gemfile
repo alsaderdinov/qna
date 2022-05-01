@@ -23,6 +23,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'aws-sdk-s3', require: false
 gem 'bootstrap', '~> 5.1.3'
+gem 'cancancan'
 gem 'cocoon'
 gem 'devise'
 gem 'faker'

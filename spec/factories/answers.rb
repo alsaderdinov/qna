@@ -7,5 +7,12 @@ FactoryBot.define do
     trait :invalid do
       body { nil }
     end
+
+    trait :with_attachment do
+      after :create do |answer|
+        file = Rack::Test::UploadedFile.new('public/apple-touch-icon.png', 'image/png')
+        answer.files.attach(file)
+      end
+    end
   end
 end
