@@ -14,7 +14,9 @@ RSpec.describe LinksController, type: :controller do
 
     context 'Author tries to delete question links' do
       it 'delete link' do
-        expect { delete :destroy, params: { id: user1_link }, format: :js }.to change(user1_question.links, :count).by(-1)
+        expect {
+          delete :destroy, params: { id: user1_link }, format: :js
+        }.to change(user1_question.links, :count).by(-1)
       end
 
       it 'renders destroy view' do
@@ -28,9 +30,9 @@ RSpec.describe LinksController, type: :controller do
         expect { delete :destroy, params: { id: user2_link }, format: :js }.to_not change(user2_question.links, :count)
       end
 
-      it 'renders destroy view' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: user2_link }, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to have_http_status 403
       end
     end
   end

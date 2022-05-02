@@ -10,6 +10,6 @@
         - else
           = link_to link.name, link.url, class: 'text-decoration-none'
 
-        - if current_user&.author_of?(link.linkable)
+        - if can?(:destroy, link.linkable)
           .mb-3
             = link_to 'Delete link', link_path(link), method: :delete, remote: true, class: 'text-decoration-none'

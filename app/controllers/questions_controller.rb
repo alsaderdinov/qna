@@ -7,6 +7,8 @@ class QuestionsController < ApplicationController
 
   after_action :publish_question, only: %i[create]
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -17,12 +19,6 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    unless current_user.author_of?(@question)
-      flash.now[:alert] = 'You must be author.'
-      render :show
-      return response.status = :forbidden
-    end
-
     if @question.update(question_params)
       flash.now[:notice] = 'Your question was successfully updated.'
     else
@@ -47,12 +43,8 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question successfully deleted'
-    else
-      render :show
-    end
+    @question.destroy
+    redirect_to questions_path, notice: 'Your question successfully deleted'
   end
 
   private
@@ -75,7 +67,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [],
-                                                    links_attributes: %i[name url],
-                                                    reward_attributes: %i[name image])
+                                     links_attributes: %i[name url],
+                                     reward_attributes: %i[name image])
   end
 end

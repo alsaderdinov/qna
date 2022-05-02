@@ -31,9 +31,9 @@ RSpec.describe AttachmentsController, type: :controller do
         end.to_not change(not_author_question.files, :count)
       end
 
-      it 'renders questions/show view' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: not_author_question.files.first }, format: :js
-        expect(response).to render_template 'questions/show'
+        expect(response).to have_http_status 403
       end
     end
   end

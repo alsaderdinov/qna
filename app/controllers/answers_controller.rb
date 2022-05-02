@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i[new create]
   after_action :publish_answer, only: %i[create]
 
+  authorize_resource
+
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
@@ -14,11 +16,6 @@ class AnswersController < ApplicationController
   end
 
   def update
-    unless current_user.author_of?(@answer)
-      flash.now[:alert] = 'You must be author.'
-      render 'questions/show'
-    end
-
     if @answer.update(answer_params)
       flash.now[:notice] = 'Your answer was successfully updated.'
     else
@@ -28,20 +25,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash.now[:notice] = 'Your answer was successfully deleted.'
-    else
-      flash.now[:alert] = 'You must be author.'
-    end
+    @answer.destroy
+    flash.now[:notice] = 'Your answer was successfully deleted.'
   end
 
   def best
-    if current_user.author_of?(@answer.question)
-      @answer.set_best!
-    else
-      flash.now[:alert] = 'You must be author.'
-    end
+    @answer.set_best!
   end
 
   private

@@ -4,8 +4,7 @@
     ' Rating:
     = resource.rating
 
-  - if current_user && !current_user.author_of?(resource)
-
+  - if can?(:upvote, resource)
     .vote-buttons.d-flex.flex-nowrap
       .upvote.order-1.p-2
         = link_to octicon('thumbsup', height: 14, fill: 'green'), polymorphic_path(resource, action: 'upvote'),
@@ -13,15 +12,17 @@
                 data: { type: :json },
                 remote: :true
 
-      .downvote.order-2.p-2
-        = link_to octicon('thumbsdown', height: 14, fill: 'red'), polymorphic_path(resource, action: 'downvote'),
-                method: :post,
-                data: { type: :json },
-                remote: :true
-
-    .vote-canceling.mb-3
-      = link_to 'Cancel vote', polymorphic_path(resource, action: 'vote_canceling'),
-              method: :delete,
+  - if can?(:downvote, resource)
+    .downvote.order-2.p-2
+      = link_to octicon('thumbsdown', height: 14, fill: 'red'), polymorphic_path(resource, action: 'downvote'),
+              method: :post,
               data: { type: :json },
-              remote: :true,
-              class: 'text-decoration-none'
+              remote: :true
+
+  - if can?(:vote_canceling, resource)
+    .vote-canceling.mb-3
+    = link_to 'Cancel vote', polymorphic_path(resource, action: 'vote_canceling'),
+            method: :delete,
+            data: { type: :json },
+            remote: :true,
+            class: 'text-decoration-none'

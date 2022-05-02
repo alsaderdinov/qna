@@ -1,4 +1,5 @@
-= link_to 'Ask Question', new_question_path, class: 'btn btn-primary mb-3 mt-3'
+- if can?(:create, Question)
+  = link_to 'Ask Question', new_question_path, class: 'btn btn-primary mb-3 mt-3'
 
 
 .questions

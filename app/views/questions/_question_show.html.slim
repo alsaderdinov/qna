@@ -20,7 +20,7 @@ div class='question-votes' id="vote-question_#{@question.id}"
 
 = render 'shared/links', resource: @question
 
-- if current_user&.author_of?(@question)
+- if can?(:update, @question)
 
   = form_with model: @question, class: 'd-none', html: { id: "edit-question-form" }, local: false do |f|
     .edit-question-errors

@@ -111,9 +111,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.best).not_to be
       end
 
-      it 'renders best view' do
+      it 'redirects to root path' do
         patch :best, params: { id: answer }, format: :js
-        expect(response).to render_template :best
+        expect(response).to have_http_status 403
       end
     end
   end
@@ -141,9 +141,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: not_author_answer }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'render question/show' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: not_author_answer }, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to have_http_status 403
       end
     end
   end

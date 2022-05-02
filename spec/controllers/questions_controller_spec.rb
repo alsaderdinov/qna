@@ -103,9 +103,9 @@ RSpec.describe QuestionsController, type: :controller do
           expect { delete :destroy, params: { id: not_author_question } }.to_not change(Question, :count)
         end
 
-        it 'render show' do
+        it 'redirects to root path' do
           delete :destroy, params: { id: not_author_question }
-          expect(response).to render_template :show
+          expect(response).to redirect_to root_path
         end
       end
     end

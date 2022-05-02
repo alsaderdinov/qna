@@ -8,7 +8,7 @@
 
     = render 'shared/links', resource: answer
 
-    - if current_user&.author_of?(answer)
+    - if can?(:update, answer)
 
       = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id }" }, local: false do |f|
         .edit-answer-errors
@@ -47,7 +47,7 @@
       figure.text-end
         - if answer.best?
           p Best answer
-        - elsif current_user&.author_of?(answer.question)
+        - elsif can?(:best, answer)
           = link_to 'Select as best answer', best_answer_path(answer), class: 'text-decoration-none',
                   method: :patch,
                   remote: true
