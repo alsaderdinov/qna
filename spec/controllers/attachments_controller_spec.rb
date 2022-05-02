@@ -33,7 +33,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'redirects to root path' do
         delete :destroy, params: { id: not_author_question.files.first }, format: :js
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 403
       end
     end
   end
