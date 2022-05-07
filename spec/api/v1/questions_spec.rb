@@ -38,10 +38,6 @@ describe 'Questions API', type: :request do
         expect(question_resp['user']['id']).to eq question.user.id
       end
 
-      it 'contains short title' do
-        expect(question_resp['short_title']).to eq question.title.truncate(7)
-      end
-
       describe 'answers' do
         let(:answer) { answers.first }
         let(:answer_resp) { question_resp['answers'].first }
