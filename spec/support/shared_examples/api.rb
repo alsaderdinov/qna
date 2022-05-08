@@ -39,3 +39,9 @@ shared_examples_for "Resource private fields aren't returnable" do
     end
   end
 end
+
+shared_examples_for 'Resource contains user' do
+  it 'returns user' do
+    expect(resource_resp.first['user']['id']).to eq resource.user.id
+  end
+end

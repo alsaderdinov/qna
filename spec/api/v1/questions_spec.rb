@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
-  let(:headers) {
+  let(:headers) do
     { 'CONTENT_TYPE' => 'application/json',
       'ACCEPT' => 'application/json' }
-  }
+  end
   let(:access_token) { create(:access_token) }
+  let(:questions_resp) { json['questions'] }
 
   describe 'GET /api/v1/questions' do
-    let(:questions_resp) { json['questions'] }
     it_behaves_like 'API Authorizable' do
       let(:method) { :get }
       let(:api_path) { '/api/v1/questions' }
@@ -32,8 +32,9 @@ describe 'Questions API', type: :request do
         let(:resource) { question }
       end
 
-      it 'contains user object' do
-        expect(questions_resp.first['user']['id']).to eq question.user.id
+      it_behaves_like 'Resource contains user' do
+        let(:resource_resp) { questions_resp }
+        let(:resource) { question }
       end
     end
   end
@@ -59,10 +60,6 @@ describe 'Questions API', type: :request do
         let(:attrs) { %w[id title body created_at updated_at] }
         let(:resource_resp) { question_resp }
         let(:resource) { question }
-      end
-
-      it 'contains user object' do
-        expect(question_resp['user']['id']).to eq question.user.id
       end
 
       describe 'comments' do
