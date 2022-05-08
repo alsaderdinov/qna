@@ -7,6 +7,11 @@ module Api
         @question = Question.find(params[:question_id])
         render json: @question.answers
       end
+
+      def show
+        @answer = Answer.find(params[:id])
+        render json: @answer
+      end
     end
   end
 end
