@@ -37,7 +37,7 @@ module Voted
   end
 
   def json_errors
-    render json: @votable.errors.full_messages, status: :unprocessable_entity
+    render json: { message: "You're not author"}, status: :unprocessable_entity
   end
 
   def json_rating
