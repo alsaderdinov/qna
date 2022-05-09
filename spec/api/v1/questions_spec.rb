@@ -3,6 +3,8 @@ require 'rails_helper'
 describe 'Questions API', type: :request do
   let(:headers) { { 'ACCEPT' => 'application/json' } }
   let(:questions_resp) { json['questions'] }
+  let(:user) { create(:user) }
+  let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
   describe 'GET /api/v1/questions' do
     it_behaves_like 'API Authorizable' do
@@ -11,7 +13,6 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 3) }
       let(:question) { questions.first }
       before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
@@ -45,8 +46,6 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
-      let(:user) { create(:user) }
       let(:question_resp) { json['question'] }
       let!(:comments) { create_list(:comment, 3, commentable: question, user: user) }
       let!(:links) { create_list(:link, 3, linkable: question) }
@@ -121,9 +120,7 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:user) { create :user }
       let(:question) { create(:question, user: user) }
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       describe 'create with valid attributes' do
         before do
@@ -170,9 +167,6 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:user) { create :user }
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-
       describe 'update with valid attributes' do
         before do
           patch "/api/v1/questions/#{question.id}", params: { question: attributes_for(:question), access_token: access_token.token },
@@ -218,9 +212,6 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:user) { create :user }
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-
       describe 'delete with valid attributes' do
         before do
           delete "/api/v1/questions/#{question.id}", params: { access_token: access_token.token },
