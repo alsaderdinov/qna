@@ -41,7 +41,7 @@ describe 'Answer API', type: :request do
   end
 
   describe 'GET /api/v1/answers/:id' do
-    let!(:answer) { create(:answer, :with_attachment) }
+    let(:answer) { create(:answer, :with_attachment) }
     let!(:comments) { create_list(:comment, 3, user: user, commentable: answer) }
     let!(:links) { create_list(:link, 3, linkable: answer) }
     let(:answer_resp) { json['answer'] }
@@ -132,7 +132,7 @@ describe 'Answer API', type: :request do
 
         it_behaves_like 'Request successful'
 
-        it 'saves a new question in the database' do
+        it 'saves a new answer in the database' do
           expect(Answer.count).to eq 4
         end
 
@@ -149,7 +149,50 @@ describe 'Answer API', type: :request do
                params: { answer: attributes_for(:answer, :invalid), access_token: access_token.token }, headers: headers
         end
 
-        it 'does not save a new question in the database' do
+        it 'does not save a new answer in the database' do
+          expect(Answer.count).to eq 3
+        end
+
+        it 'returns 422 status' do
+          expect(response.status).to eq 422
+        end
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/answers/:id' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+      let(:api_path) { "/api/v1/answers/#{answer.id}" }
+    end
+
+    context 'authorized' do
+      describe 'update with valid attributes' do
+        before do
+          patch "/api/v1/answers/#{answer.id}", params: { answer: attributes_for(:answer), access_token: access_token.token },
+                                                headers: headers
+        end
+
+        it_behaves_like 'Request successful'
+
+        it 'updates answer in the database' do
+          expect(Answer.count).to eq 3
+        end
+
+        it_behaves_like 'Resource public fields returnable' do
+          let(:attrs) { %w[body] }
+          let(:resource_resp) { json['answer'] }
+          let(:resource) { Answer.first }
+        end
+      end
+
+      describe 'update with invalid attributes' do
+        before do
+          patch "/api/v1/answers/#{answer.id}",
+                params: { answer: attributes_for(:answer, :invalid), access_token: access_token.token }, headers: headers
+        end
+
+        it 'does not update answer in the database' do
           expect(Answer.count).to eq 3
         end
 
