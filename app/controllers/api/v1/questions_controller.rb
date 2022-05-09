@@ -22,6 +22,14 @@ module Api
         end
       end
 
+      def update
+        if question.update(question_params)
+          render json: question
+        else
+          head :unprocessable_entity
+        end
+      end
+
       private
 
       def question

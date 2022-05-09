@@ -160,4 +160,52 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'PATCH /api/v1/questions/:id' do
+    let!(:question) { create(:question) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'authorized' do
+      let(:user) { create :user }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      describe 'update with valid attributes' do
+        before do
+          patch "/api/v1/questions/#{question.id}", params: { question: attributes_for(:question), access_token: access_token.token },
+                                                    headers: headers
+        end
+
+        it_behaves_like 'Request successful'
+
+        it 'updates a question in the database' do
+          expect(Question.count).to eq 1
+        end
+
+        it_behaves_like 'Resource public fields returnable' do
+          let(:attrs) { %w[title body] }
+          let(:resource_resp) { json['question'] }
+          let(:resource) { question }
+        end
+      end
+
+      describe 'update with invalid attributes' do
+        before do
+          patch "/api/v1/questions/#{question.id}",
+                params: { question: attributes_for(:question, :invalid), access_token: access_token.token }, headers: headers
+        end
+
+        it 'does not update a question in the database' do
+          expect(Question.count).to eq 1
+        end
+
+        it 'returns 422 status' do
+          expect(response.status).to eq 422
+        end
+      end
+    end
+  end
 end
