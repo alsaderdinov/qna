@@ -30,6 +30,10 @@ module Api
         end
       end
 
+      def destroy
+        head :ok if answer.destroy
+      end
+
       private
 
       def answer

@@ -114,9 +114,9 @@ describe 'Questions API', type: :request do
   end
 
   describe 'POST /api/v1/questions' do
+    let(:api_path) { '/api/v1/questions' }
     it_behaves_like 'API Authorizable' do
       let(:method) { :post }
-      let(:api_path) { '/api/v1/questions' }
     end
 
     context 'authorized' do
@@ -124,8 +124,8 @@ describe 'Questions API', type: :request do
 
       describe 'create with valid attributes' do
         before do
-          post '/api/v1/questions', params: { question: attributes_for(:question), access_token: access_token.token },
-                                    headers: headers
+          post api_path, params: { question: attributes_for(:question), access_token: access_token.token },
+                         headers: headers
         end
 
         it_behaves_like 'Request successful'
@@ -143,7 +143,7 @@ describe 'Questions API', type: :request do
 
       describe 'create with invalid attributes' do
         before do
-          post '/api/v1/questions',
+          post api_path,
                params: { question: attributes_for(:question, :invalid), access_token: access_token.token }, headers: headers
         end
 
@@ -160,17 +160,17 @@ describe 'Questions API', type: :request do
 
   describe 'PATCH /api/v1/questions/:id' do
     let!(:question) { create(:question) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :patch }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
     end
 
     context 'authorized' do
       describe 'update with valid attributes' do
         before do
-          patch "/api/v1/questions/#{question.id}", params: { question: attributes_for(:question), access_token: access_token.token },
-                                                    headers: headers
+          patch api_path, params: { question: attributes_for(:question), access_token: access_token.token },
+                          headers: headers
         end
 
         it_behaves_like 'Request successful'
@@ -188,7 +188,7 @@ describe 'Questions API', type: :request do
 
       describe 'update with invalid attributes' do
         before do
-          patch "/api/v1/questions/#{question.id}",
+          patch api_path,
                 params: { question: attributes_for(:question, :invalid), access_token: access_token.token }, headers: headers
         end
 
@@ -205,17 +205,17 @@ describe 'Questions API', type: :request do
 
   describe 'DELETE /api/v1/questions/:id' do
     let!(:question) { create(:question) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :delete }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
     end
 
     context 'authorized' do
       describe 'delete with valid attributes' do
         before do
-          delete "/api/v1/questions/#{question.id}", params: { access_token: access_token.token },
-                                                     headers: headers
+          delete api_path, params: { access_token: access_token.token },
+                           headers: headers
         end
 
         it_behaves_like 'Request successful'

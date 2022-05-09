@@ -161,16 +161,16 @@ describe 'Answer API', type: :request do
   end
 
   describe 'PATCH /api/v1/answers/:id' do
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
     it_behaves_like 'API Authorizable' do
       let(:method) { :patch }
-      let(:api_path) { "/api/v1/answers/#{answer.id}" }
     end
 
     context 'authorized' do
       describe 'update with valid attributes' do
         before do
-          patch "/api/v1/answers/#{answer.id}", params: { answer: attributes_for(:answer), access_token: access_token.token },
-                                                headers: headers
+          patch api_path, params: { answer: attributes_for(:answer), access_token: access_token.token },
+                          headers: headers
         end
 
         it_behaves_like 'Request successful'
@@ -188,7 +188,7 @@ describe 'Answer API', type: :request do
 
       describe 'update with invalid attributes' do
         before do
-          patch "/api/v1/answers/#{answer.id}",
+          patch api_path,
                 params: { answer: attributes_for(:answer, :invalid), access_token: access_token.token }, headers: headers
         end
 
@@ -198,6 +198,29 @@ describe 'Answer API', type: :request do
 
         it 'returns 422 status' do
           expect(response.status).to eq 422
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/answers/:id' do
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+      describe 'delete with valid attributes' do
+        before do
+          delete api_path, params: { access_token: access_token.token },
+                           headers: headers
+        end
+
+        it_behaves_like 'Request successful'
+
+        it 'deletes a answer from the database' do
+          expect(Answer.count).to eq 2
         end
       end
     end
