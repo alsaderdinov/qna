@@ -1,11 +1,7 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
-  let(:headers) do
-    { 'CONTENT_TYPE' => 'application/json',
-      'ACCEPT' => 'application/json' }
-  end
-  let(:access_token) { create(:access_token) }
+  let(:headers) { { 'ACCEPT' => 'application/json' } }
   let(:questions_resp) { json['questions'] }
 
   describe 'GET /api/v1/questions' do
@@ -15,6 +11,7 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
+      let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 3) }
       let(:question) { questions.first }
       before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
@@ -48,6 +45,7 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
+      let(:access_token) { create(:access_token) }
       let(:user) { create(:user) }
       let(:question_resp) { json['question'] }
       let!(:comments) { create_list(:comment, 3, commentable: question, user: user) }
@@ -111,6 +109,53 @@ describe 'Questions API', type: :request do
           let(:attrs) { %w[id url name created_at updated_at] }
           let(:resource_resp) { link_resp }
           let(:resource) { link }
+        end
+      end
+    end
+  end
+
+  describe 'POST /api/v1/questions' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+      let(:api_path) { '/api/v1/questions' }
+    end
+
+    context 'authorized' do
+      let(:user) { create :user }
+      let(:question) { create(:question, user: user) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      describe 'create with valid attributes' do
+        before do
+          post '/api/v1/questions', params: { question: attributes_for(:question), access_token: access_token.token },
+                                    headers: headers
+        end
+
+        it_behaves_like 'Request successful'
+
+        it 'saves a new question in the database' do
+          expect(Question.count).to eq 1
+        end
+
+        it_behaves_like 'Resource public fields returnable' do
+          let(:attrs) { %w[title body] }
+          let(:resource_resp) { json['question'] }
+          let(:resource) { question }
+        end
+      end
+
+      describe 'create with invalid attributes' do
+        before do
+          post '/api/v1/questions',
+               params: { question: attributes_for(:question, :invalid), access_token: access_token.token }, headers: headers
+        end
+
+        it 'does not save a new question in the database' do
+          expect(Question.count).to eq 0
+        end
+
+        it 'returns 422 status' do
+          expect(response.status).to eq 422
         end
       end
     end

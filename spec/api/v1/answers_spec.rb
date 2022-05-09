@@ -5,7 +5,6 @@ describe 'Answer API', type: :request do
     { 'CONTENT_TYPE' => 'application/json',
       'ACCEPT' => 'application/json' }
   end
-  let(:access_token) { create(:access_token) }
   let(:user) { create(:user) }
   let(:question) { create(:question) }
   let!(:answers) { create_list(:answer, 3, question: question) }
@@ -19,6 +18,7 @@ describe 'Answer API', type: :request do
     end
 
     context 'authorized' do
+      let(:access_token) { create(:access_token) }
       before do
         get "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token }, headers: headers
       end
@@ -55,6 +55,7 @@ describe 'Answer API', type: :request do
     end
 
     context 'authorized' do
+      let(:access_token) { create(:access_token) }
       before { get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }, headers: headers }
 
       it_behaves_like 'Request successful'
