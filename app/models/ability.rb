@@ -24,6 +24,10 @@ class Ability
   end
 
   def user_abilities
+
+    # API
+    can :me, User, user_id: user.id
+
     # Read
     guest_abilities
 
