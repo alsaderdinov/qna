@@ -36,6 +36,9 @@ gem 'jquery-rails'
 gem 'octicons_helper'
 gem 'rubocop', require: false
 gem 'slim-rails'
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
