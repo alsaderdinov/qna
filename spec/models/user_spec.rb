@@ -25,3 +25,18 @@ describe 'user is author?' do
     expect(not_author).to_not be_author_of(question)
   end
 end
+
+describe 'user subscriber of?' do
+  let(:user) { create(:user) }
+  let(:not_author) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:subscription) { create(:subscription, question: question, user: user) }
+
+  it 'the user subscriber of question' do
+    expect(user).to be_subscriber_of(question)
+  end
+
+  it 'the user does not subscriber of question' do
+    expect(not_author).to_not be_subscriber_of(question)
+  end
+end

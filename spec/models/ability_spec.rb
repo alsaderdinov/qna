@@ -40,6 +40,7 @@ describe Ability do
 
     context 'create' do
       it { should be_able_to :create, Question }
+      it { should be_able_to :create, Subscription }
       it { should be_able_to :create, Answer }
       it { should be_able_to :create, Comment }
       it { should be_able_to :create_comment, Question }
@@ -82,6 +83,9 @@ describe Ability do
     context 'destroy' do
       it { should be_able_to :destroy, create(:question, user_id: user.id) }
       it { should_not be_able_to :destroy, create(:question, user_id: other.id) }
+
+      it { should be_able_to :destroy, create(:subscription, question: question, user_id: user.id) }
+      it { should_not be_able_to :destroy, create(:subscription, question: question, user_id: other.id) }
 
       it { should be_able_to :destroy, create(:answer, user_id: user.id) }
       it { should_not be_able_to :destroy, create(:answer, user_id: other.id) }
