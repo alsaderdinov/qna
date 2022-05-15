@@ -69,4 +69,8 @@ div class='question-votes' id="vote-question_#{@question.id}"
     = render @question.comments
 
 
+  - if can?(:create, Subscription)
+    = render 'subscriptions/subscription', resource: @question
+
+
 = render partial: 'comments/form', locals: { commentable: @question }

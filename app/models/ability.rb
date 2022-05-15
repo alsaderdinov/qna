@@ -24,7 +24,6 @@ class Ability
   end
 
   def user_abilities
-
     # API
     can :me, User, user_id: user.id
 
@@ -32,7 +31,7 @@ class Ability
     guest_abilities
 
     # Create
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscription]
     can :create_comment, [Answer, Question]
 
     # Update
@@ -43,7 +42,7 @@ class Ability
     end
 
     # Destroy
-    can :destroy, [Question, Answer], user_id: user.id
+    can :destroy, [Question, Answer, Subscription], user_id: user.id
     can :destroy, Link, linkable: { user_id: user.id }
     can :destroy, ActiveStorage::Attachment do |attachment|
       user.author_of?(attachment.record)

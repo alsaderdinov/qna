@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :find_question, only: %i[show update destroy]
+  before_action :find_subscription, only: %i[show update]
 
   after_action :publish_question, only: %i[create]
 
@@ -65,9 +66,13 @@ class QuestionsController < ApplicationController
     @question = Question.with_attached_files.find(params[:id])
   end
 
+  def find_subscription
+    @subscription = @question.subscriptions.find_by(user: current_user)
+  end
+
   def question_params
     params.require(:question).permit(:title, :body, files: [],
-                                     links_attributes: %i[name url],
-                                     reward_attributes: %i[name image])
+                                                    links_attributes: %i[name url],
+                                                    reward_attributes: %i[name image])
   end
 end
